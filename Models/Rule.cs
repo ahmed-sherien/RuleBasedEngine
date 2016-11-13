@@ -11,6 +11,7 @@ public class Rule
         MemberName = memberName;
         Operation = operation;
         TargetValues = new List<string>();
+        if (!targetValues.Any()) return;
         foreach (var value in targetValues)
         {
             TargetValues.Add(value);
@@ -18,6 +19,6 @@ public class Rule
     }
     override public string ToString()
     {
-        return $"{MemberName} {Operation} {TargetValues.Aggregate((s1, s2) => $"{s1}, {s2}")}";
+        return $"{MemberName} {Operation}{(TargetValues.Any() ? " "+TargetValues.Aggregate((s1, s2) => $"{s1}, {s2}") : string.Empty)}";
     }
 }

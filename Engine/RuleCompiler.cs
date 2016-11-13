@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -7,20 +9,21 @@ public class RuleCompiler
     public Func<T, bool> CompileRule<T>(Rule rule)
     {
         var parameter = Expression.Parameter(typeof(T));
-        var expression = BuildExpression<T>(rule, parameter);
+        var expression = BuildExpression(rule, parameter);
         return Expression.Lambda<Func<T, bool>>(expression, parameter).Compile();
     }
-    Expression BuildExpression<T>(Rule rule, ParameterExpression parameter)
+    Expression BuildExpression(Rule rule, ParameterExpression parameter)
     {
-        var left = GetLeftSide(parameter, rule.MemberName);
-        var operation = GetOperation(rule.Operation);
-        var right = GetRightSide<T>(rule);
-        return GetBuildedExperssion<T>(rule, left, operation, right);
+        var member = GetMember(parameter, rule.MemberName);
+        var expressionType = GetExpressionType(rule.Operation);
+        var constants = GetConstants(member, rule);
+        return GetBuildedExperssion(rule, member, expressionType, constants);
     }
-    MemberExpression GetLeftSide(ParameterExpression parameter, string memberName)
+    Expression GetMember(ParameterExpression parameter, string memberName)
     {
         try
         {
+            if (parameter.Type.Name == memberName) return parameter;
             return MemberExpression.Property(parameter, memberName);
         }
         catch (ArgumentException ex)
@@ -28,30 +31,31 @@ public class RuleCompiler
             throw new Exception($"No property in {parameter.Type.Name} named {memberName}", ex);
         }
     }
-    ExpressionType GetOperation(Operation operation)
+    ExpressionType GetExpressionType(Operation operation)
     {
         return operation.IsMethodCall ? ExpressionType.Call : (ExpressionType)Enum.Parse(typeof(ExpressionType), operation.Type.ToString());
     }
-    ConstantExpression GetRightSide<T>(Rule rule)
+    List<ConstantExpression> GetConstants(Expression member, Rule rule)
     {
-        var propertyType = typeof(T).GetProperty(rule.MemberName).PropertyType;
+        var type = member.Type;
         if (rule.Operation.IsMethodCall)
         {
-            var method = propertyType.GetMethod(rule.Operation.MethodName);
-            if(method == null) throw new Exception($"There is no method named {rule.Operation} in the type {propertyType.Name}");
-            var parameters = method.GetParameters();
-            return Expression.Constant(Convert.ChangeType(rule.TargetValues[0], parameters[0].ParameterType));
+            var method = type.GetMethod(rule.Operation.MethodName);
+            if (method == null) throw new Exception($"There is no method named {rule.Operation} in the type {type.Name}");
+            var parameters = method.GetParameters().ToList();
+            if (parameters.Count != rule.TargetValues.Count) throw new Exception($"There is no method named {rule.Operation} in the type {type.Name} taking the same count of input");
+            return parameters.Select(p => Expression.Constant(Convert.ChangeType(rule.TargetValues[parameters.IndexOf(p)], p.ParameterType))).ToList();
         }
-        return Expression.Constant(Convert.ChangeType(rule.TargetValues[0], propertyType));
+        return new List<ConstantExpression> { Expression.Constant(Convert.ChangeType(rule.TargetValues[0], type)) };
     }
-    Expression GetBuildedExperssion<T>(Rule rule, MemberExpression left, ExpressionType operation, ConstantExpression right)
+    Expression GetBuildedExperssion(Rule rule, Expression member, ExpressionType expressionType, List<ConstantExpression> constants)
     {
         if (rule.Operation.IsMethodCall)
         {
-            var propertyType = typeof(T).GetProperty(rule.MemberName).PropertyType;
-            var method = propertyType.GetMethod(rule.Operation.MethodName);
-            return Expression.Call(left, method, right);
+            var type = member.Type;
+            var method = type.GetMethod(rule.Operation.MethodName);
+            return Expression.Call(member, method, constants);
         }
-        return Expression.MakeBinary(operation, left, right);
+        return Expression.MakeBinary(expressionType, member, constants[0]);
     }
 }
