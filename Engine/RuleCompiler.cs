@@ -13,8 +13,8 @@ public class RuleCompiler
     Expression BuildExpression<T>(Rule rule, ParameterExpression parameter)
     {
         var left = GetLeftSide(parameter, rule.MemberName);
-        var operation = GetOperation(rule.Operator);
-        var right = GetRightSide<T>(rule, operation);
+        var operation = GetOperation(rule.Operation);
+        var right = GetRightSide<T>(rule);
         return GetBuildedExperssion<T>(rule, left, operation, right);
     }
     MemberExpression GetLeftSide(ParameterExpression parameter, string memberName)
@@ -28,31 +28,28 @@ public class RuleCompiler
             throw new Exception($"No property in {parameter.Type.Name} named {memberName}", ex);
         }
     }
-    ExpressionType GetOperation(string _operator)
+    ExpressionType GetOperation(Operation operation)
     {
-        ExpressionType expressionType;
-        if (ExpressionType.TryParse(_operator, out expressionType)) return expressionType;
-        return ExpressionType.Default;
+        return operation.IsMethodCall ? ExpressionType.Call : (ExpressionType)Enum.Parse(typeof(ExpressionType), operation.Type.ToString());
     }
-    ConstantExpression GetRightSide<T>(Rule rule, ExpressionType operation)
+    ConstantExpression GetRightSide<T>(Rule rule)
     {
         var propertyType = typeof(T).GetProperty(rule.MemberName).PropertyType;
-        if (operation == ExpressionType.Default)
+        if (rule.Operation.IsMethodCall)
         {
-            var method = propertyType.GetMethod(rule.Operator);
-            if(method == null) throw new Exception($"There is no method named {rule.Operator} in the type {rule.MemberName}");
+            var method = propertyType.GetMethod(rule.Operation.MethodName);
+            if(method == null) throw new Exception($"There is no method named {rule.Operation} in the type {propertyType.Name}");
             var parameters = method.GetParameters();
-            if (parameters.Length < 1 || parameters.Length > 1) throw new Exception($"There is no method named {rule.Operator} having a single parameter in the type {rule.MemberName}");
-            return Expression.Constant(Convert.ChangeType(rule.TargetValue, parameters[0].ParameterType));
+            return Expression.Constant(Convert.ChangeType(rule.TargetValues[0], parameters[0].ParameterType));
         }
-        return Expression.Constant(Convert.ChangeType(rule.TargetValue, propertyType));
+        return Expression.Constant(Convert.ChangeType(rule.TargetValues[0], propertyType));
     }
     Expression GetBuildedExperssion<T>(Rule rule, MemberExpression left, ExpressionType operation, ConstantExpression right)
     {
-        if (operation == ExpressionType.Default)
+        if (rule.Operation.IsMethodCall)
         {
             var propertyType = typeof(T).GetProperty(rule.MemberName).PropertyType;
-            var method = propertyType.GetMethod(rule.Operator);
+            var method = propertyType.GetMethod(rule.Operation.MethodName);
             return Expression.Call(left, method, right);
         }
         return Expression.MakeBinary(operation, left, right);

@@ -1,16 +1,23 @@
+using System.Collections.Generic;
+using System.Linq;
+
 public class Rule
 {
     public string MemberName { get; set; }
-    public string Operator { get; set; }
-    public string TargetValue { get; set; }
-    public Rule (string memberName, string _operator, string targetValue)
+    public Operation Operation { get; set; }
+    public List<string> TargetValues { get; set; }
+    public Rule(string memberName, Operation operation, params string[] targetValues)
     {
         MemberName = memberName;
-        Operator = _operator;
-        TargetValue = targetValue;
+        Operation = operation;
+        TargetValues = new List<string>();
+        foreach (var value in targetValues)
+        {
+            TargetValues.Add(value);
+        }
     }
     override public string ToString()
     {
-        return $"{MemberName} should be {Operator} {TargetValue}";
+        return $"{MemberName} {Operation} {TargetValues.Aggregate((s1, s2) => $"{s1}, {s2}")}";
     }
 }
