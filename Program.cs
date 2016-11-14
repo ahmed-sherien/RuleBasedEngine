@@ -8,7 +8,7 @@ namespace RuleBasedEngine
         public static void Main(string[] args)
         {
             var rules = new List<Rule> {
-                new Rule("Age", new Operation { IsMethodCall = false, Type = OperationType.GreaterThan }, "BecomeAdult", "18"),
+                new Rule("Age", Operation.GreaterThan, "BecomeAdult", "18"),
             };
             rules.ForEach(r => Console.WriteLine(r));
 
