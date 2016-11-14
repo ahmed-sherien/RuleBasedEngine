@@ -6,7 +6,8 @@ public class Rule
     public string MemberName { get; set; }
     public Operation Operation { get; set; }
     public List<string> TargetValues { get; set; }
-    public Rule(string memberName, Operation operation, params string[] targetValues)
+    public string ActionName { get; set; }
+    public Rule(string memberName, Operation operation, string actionName, params string[] targetValues)
     {
         MemberName = memberName;
         Operation = operation;
@@ -16,9 +17,10 @@ public class Rule
         {
             TargetValues.Add(value);
         }
+        ActionName = actionName;
     }
     override public string ToString()
     {
-        return $"{MemberName} {Operation}{(TargetValues.Any() ? " "+TargetValues.Aggregate((s1, s2) => $"{s1}, {s2}") : string.Empty)}";
+        return $"If {MemberName} {Operation}{(TargetValues.Any() ? " "+TargetValues.Aggregate((s1, s2) => $"{s1}, {s2}") : string.Empty)}, then {ActionName}";
     }
 }
