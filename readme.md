@@ -25,26 +25,12 @@ var people = new List<Person> {
     new Person{ Age = 9 }
 };
 
-var compiler = new RuleCompiler();
-var matcher = new RuleMatcher(compiler);
+var matcher = new RuleMatcher();
 var executer = new RuleExecuter();
 
 people.ForEach(person =>
 {
-    try
-    {
-        var match = matcher.IsMatch<Person>(person, rule);
-        executer.ExecuteAction<Person>(match, rule.ActionName);
-    }
-    catch (Exception ex)
-    {
-        Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine(ex.Message);
-        Console.ForegroundColor = ConsoleColor.White;
-    }
-    finally
-    {
-        Console.WriteLine("-----------------------------");
-    }
+    var match = matcher.IsMatch<Person>(person, rule);
+    executer.ExecuteAction<Person>(match, rule.ActionName);
 });
 ```
