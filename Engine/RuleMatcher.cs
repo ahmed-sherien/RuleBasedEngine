@@ -2,16 +2,11 @@ using RuleBasedEngine.Models;
 
 namespace RuleBasedEngine.Engine
 {
-    public class RuleMatcher
+    public class RuleMatcher<T>
     {
-        private ConditionCompiler _compiler;
-        public RuleMatcher()
+        public MatchResult<T> IsMatch(T item, Rule<T> rule)
         {
-            _compiler = new ConditionCompiler();
-        }
-        public MatchResult<T> IsMatch<T>(T item, Rule rule)
-        {
-            var compiledCondition = _compiler.CompileRule<T>(rule.Condition);
+            var compiledCondition = rule.Condition.Compile();
             return new MatchResult<T>
             {
                 IsMatch = compiledCondition(item),

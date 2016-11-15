@@ -9,10 +9,11 @@ namespace RuleBasedEngine
     {
         public static void Main(string[] args)
         {
-            var rules = new List<Rule> {
-                new Rule(Condition.GreaterThanCondition("Age", "18"), "BecomeAdult"),
+            var rules = new List<Rule<Person>> {
+                //new Rule<Person>(Condition<Person>.GreaterThanCondition("Age", "18"), "BecomeAdult"),
+                new Rule<Person>(Condition<Person>.GenerateCondition<int>(p => p.Age, Operation.GreaterThan, 18), "BecomeAdult")
             };
-            rules.ForEach(r => Console.WriteLine(r));
+            rules.ForEach(rule => Console.WriteLine(rule));
 
             var people = new List<Person> {
                 new Person{ Age = 15 },
@@ -21,7 +22,7 @@ namespace RuleBasedEngine
                 new Person{ Age = 9 }
             };
 
-            var matcher = new RuleMatcher();
+            var matcher = new RuleMatcher<Person>();
             var executer = new RuleExecuter();
             people.ForEach(person =>
             {
@@ -29,11 +30,11 @@ namespace RuleBasedEngine
                 Console.WriteLine(person);
                 try
                 {
-                    rules.ForEach(r =>
+                    rules.ForEach(rule =>
                     {
-                        var match = matcher.IsMatch<Person>(person, r);
+                        var match = matcher.IsMatch(person, rule);
                         Console.WriteLine(match);
-                        executer.ExecuteAction<Person>(match, r.ActionName);
+                        executer.ExecuteAction<Person>(match, rule.ActionName);
                         Console.WriteLine(person);
                     });
                 }
