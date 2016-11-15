@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using RuleBasedEngine.Engine;
+using RuleBasedEngine.Models;
 
 namespace RuleBasedEngine
 {
@@ -8,7 +10,7 @@ namespace RuleBasedEngine
         public static void Main(string[] args)
         {
             var rules = new List<Rule> {
-                new Rule("Age", Operation.GreaterThan, "BecomeAdult", "18"),
+                new Rule(Condition.GreaterThanCondition("Age", "18"), "BecomeAdult"),
             };
             rules.ForEach(r => Console.WriteLine(r));
 
@@ -19,8 +21,7 @@ namespace RuleBasedEngine
                 new Person{ Age = 9 }
             };
 
-            var compiler = new RuleCompiler();
-            var matcher = new RuleMatcher(compiler);
+            var matcher = new RuleMatcher();
             var executer = new RuleExecuter();
             people.ForEach(person =>
             {

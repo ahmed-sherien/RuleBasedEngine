@@ -1,18 +1,23 @@
-public class RuleMatcher
+using RuleBasedEngine.Models;
+
+namespace RuleBasedEngine.Engine
 {
-    private RuleCompiler _compiler;
-    public RuleMatcher(RuleCompiler compiler)
+    public class RuleMatcher
     {
-        _compiler = compiler;
-    }
-    public MatchResult<T> IsMatch<T>(T item, Rule rule)
-    {
-        var compiledRule = _compiler.CompileRule<T>(rule);
-        return new MatchResult<T>
+        private ConditionCompiler _compiler;
+        public RuleMatcher()
         {
-            IsMatch = compiledRule(item),
-            Rule = rule,
-            Item = item
-        };
+            _compiler = new ConditionCompiler();
+        }
+        public MatchResult<T> IsMatch<T>(T item, Rule rule)
+        {
+            var compiledCondition = _compiler.CompileRule<T>(rule.Condition);
+            return new MatchResult<T>
+            {
+                IsMatch = compiledCondition(item),
+                Rule = rule,
+                Item = item
+            };
+        }
     }
 }

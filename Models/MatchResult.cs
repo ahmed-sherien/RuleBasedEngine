@@ -1,10 +1,13 @@
-public class MatchResult<T>
+namespace RuleBasedEngine.Models
 {
-    public bool IsMatch { get; set; }
-    public Rule Rule { get; set; }
-    public T Item { get; set; }
-    public override string ToString()
+    public class MatchResult<T>
     {
-        return $"{typeof(T).Name} does {(IsMatch ? "" : "not ")}match the rule: \"{Rule}\"";
+        public bool IsMatch { get; set; }
+        public Rule Rule { get; set; }
+        public T Item { get; set; }
+        public override string ToString()
+        {
+            return $"{typeof(T).Name} does {(IsMatch ? "" : "not ")}match the rule: \"{Rule}\"";
+        }
     }
 }

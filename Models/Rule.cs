@@ -1,26 +1,17 @@
-using System.Collections.Generic;
-using System.Linq;
-
-public class Rule
+namespace RuleBasedEngine.Models
 {
-    public string MemberName { get; set; }
-    public Operation Operation { get; set; }
-    public List<string> TargetValues { get; set; }
-    public string ActionName { get; set; }
-    public Rule(string memberName, Operation operation, string actionName, params string[] targetValues)
+    public class Rule
     {
-        MemberName = memberName;
-        Operation = operation;
-        TargetValues = new List<string>();
-        if (!targetValues.Any()) return;
-        foreach (var value in targetValues)
+        public Condition Condition { get; set; }
+        public string ActionName { get; set; }
+        public Rule(Condition condition, string actionName)
         {
-            TargetValues.Add(value);
+            Condition = condition;
+            ActionName = actionName;
         }
-        ActionName = actionName;
-    }
-    override public string ToString()
-    {
-        return $"If {MemberName} {Operation}{(TargetValues.Any() ? " "+TargetValues.Aggregate((s1, s2) => $"{s1}, {s2}") : string.Empty)}, then {ActionName}";
+        override public string ToString()
+        {
+            return $"If {Condition}, then {ActionName}";
+        }
     }
 }
