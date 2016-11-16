@@ -83,6 +83,28 @@ namespace RuleBasedEngine.Models
                 };
             }
         }
+        public static Operation IsTrue
+        {
+            get
+            {
+                return new Operation
+                {
+                    IsMethodCall = false,
+                    Type = OperationType.IsTrue
+                };
+            }
+        }
+        public static Operation IsFalse
+        {
+            get
+            {
+                return new Operation
+                {
+                    IsMethodCall = false,
+                    Type = OperationType.IsFalse
+                };
+            }
+        }
     }
 
     public enum OperationType
@@ -93,6 +115,8 @@ namespace RuleBasedEngine.Models
         LessThan,
         LessThanOrEqual,
         GreaterThan,
-        GreaterThanOrEqual
+        GreaterThanOrEqual,
+        IsTrue,
+        IsFalse
     }
 }
