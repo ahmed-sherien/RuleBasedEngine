@@ -16,21 +16,31 @@ to run:
 ## Example:
 
 ```c#
-var rule = new Rule(Condition.GreaterThanCondition("Age", "18"), "BecomeAdult");
+class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+    public bool IsAdult { get { return Age > 18; } }
+    public void GoToClub()
+    {
+        Console.WriteLine($"{Name} went to the club");
+    }
+}
+
+var rule = new Rule<Person>(
+    condition: new RuleCondition<Person, int>(p => p.Age, Operation.GreaterThan, 18),
+    action: new RuleAction<Person>(p => p.GoToClub)
+    );
 
 var people = new List<Person> {
-    new Person{ Age = 15 },
-    new Person{ Age = 31 },
-    new Person{ Age = 54 },
-    new Person{ Age = 9 }
+    new Person{ Name = "Anas", Age = 15 },
+    new Person{ Name = "Ahmed", Age = 31 },
+    new Person{ Name = "Sameh", Age = 54 },
+    new Person{ Name = "Janna", Age = 9 }
 };
-
-var matcher = new RuleMatcher();
-var executer = new RuleExecuter();
 
 people.ForEach(person =>
 {
-    var match = matcher.IsMatch<Person>(person, rule);
-    executer.ExecuteAction<Person>(match, rule.ActionName);
+    rule.Match(person).Execute();
 });
 ```
