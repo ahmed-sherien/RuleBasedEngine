@@ -15,7 +15,7 @@ to run:
 
 ## Example:
 
-```c#
+```csharp
 class Person
 {
     public string Name { get; set; }
@@ -43,4 +43,30 @@ people.ForEach(person =>
 {
     rule.Match(person).Execute();
 });
+```
+
+output will be like:
+
+```
+rule:---------------------------------
+If Age GreaterThan 18, then GoToClub
+--------------------------------------
+--[person 1]--------------------------
+Person whose name is Anas, age is 15, and is not adult
+Person is not a match
+--------------------------------------
+--[person 2]--------------------------
+Person whose name is Ahmed, age is 31, and is adult
+Person is a match
+Ahmed went to the club
+--------------------------------------
+--[person 3]--------------------------
+Person whose name is Sameh, age is 54, and is adult
+Person is a match
+Sameh went to the club
+--------------------------------------
+--[person 4]--------------------------
+Person whose name is Janna, age is 9, and is not adult
+Person is not a match
+--------------------------------------
 ```
