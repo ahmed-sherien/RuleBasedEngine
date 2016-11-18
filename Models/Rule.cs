@@ -14,7 +14,7 @@ namespace RuleBasedEngine.Models
         }
         public List<IRuleCondition<T>> Conditions { get; set; }
         public IRuleAction<T> Action { get; set; }
-        public virtual IMatchResult Match(T item)
+        public IMatchResult Match(T item)
         {
             return new MatchResult<T>
             {
