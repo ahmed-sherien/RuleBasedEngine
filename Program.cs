@@ -9,15 +9,21 @@ namespace RuleBasedEngine
     {
         public static void Main(string[] args)
         {
-            var rules = new List<IRule<Person>> {
+            var rules = new List<IRule<Person>>
+            {
                 new Rule<Person>(
-                    condition: new RuleCondition<Person, bool>(p => p.IsAdult, Operation.IsTrue), 
+                    conditions: new List<IRuleCondition<Person>>
+                    {
+                        new RuleCondition<Person, bool>(p => p.IsAdult, Operation.IsTrue),
+                        new RuleCondition<Person, int>(p => p.Age, Operation.GreaterThan, 18)
+                    },
                     action  : new RuleAction<Person>(p => p.GoToClub))
             };
 
             Console.WriteLine("--[rules]-------------------------------");
             rules.ForEach(rule => Console.WriteLine(rule));
             Console.WriteLine("----------------------------------------");
+            Console.WriteLine();
 
             var people = new List<Person> {
                 new Person{ Name = "Anas", Age = 15 },
@@ -39,6 +45,7 @@ namespace RuleBasedEngine
                     Console.WriteLine("----------------------------------------");
                 });
                 Console.WriteLine("----------------------------------------");
+                Console.WriteLine();
             });
         }
     }
