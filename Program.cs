@@ -10,8 +10,14 @@ namespace RuleBasedEngine
         public static void Main(string[] args)
         {
             var rules = new List<IRule<Person>> {
-                new Rule<Person>(condition: new RuleCondition<Person, int>(p => p.Age, Operation.GreaterThan, 18), action: new RuleAction<Person>(p => p.GoToClub))
+                new Rule<Person>(
+                    condition: new RuleCondition<Person, bool>(p => p.IsAdult, Operation.IsTrue), 
+                    action  : new RuleAction<Person>(p => p.GoToClub))
             };
+
+            Console.WriteLine("--[rules]-------------------------------");
+            rules.ForEach(rule => Console.WriteLine(rule));
+            Console.WriteLine("----------------------------------------");
 
             var people = new List<Person> {
                 new Person{ Name = "Anas", Age = 15 },
@@ -20,16 +26,19 @@ namespace RuleBasedEngine
                 new Person{ Name = "Janna", Age = 9 }
             };
 
-            people.ForEach(person =>{
-                Console.WriteLine("---------------------------------");
+            people.ForEach(person =>
+            {
+                Console.WriteLine($"--[person {people.IndexOf(person) + 1}]----------------------------");
                 Console.WriteLine(person);
-                rules.ForEach(rule => {
-                    Console.WriteLine("rule:---------------------------------");
-                    Console.WriteLine(rule);
+                rules.ForEach(rule =>
+                {
+                    Console.WriteLine($"--[rule {rules.IndexOf(rule) + 1}]------------------------------");
                     var match = rule.Match(person);
                     Console.WriteLine(match);
                     match.Execute();
+                    Console.WriteLine("----------------------------------------");
                 });
+                Console.WriteLine("----------------------------------------");
             });
         }
     }
