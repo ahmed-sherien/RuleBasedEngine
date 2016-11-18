@@ -27,16 +27,28 @@ class Person
     }
 }
 
-var rule = new Rule<Person>(
-    condition: new RuleCondition<Person, int>(p => p.Age, Operation.GreaterThan, 18),
-    action: new RuleAction<Person>(p => p.GoToClub)
-    );
+class Club
+{
+    public string Name { get; set; }
+    public bool IsOpen { get; set; }
+}
+
+var conditionCollection = new RuleConditionCollection<Person, Club>();
+conditionCollection.Add(new RuleCondition<Person, int>(p => p.Age, Operation.GreaterThan, 18));
+conditionCollection.Add(new RuleCondition<Club, bool>(c => c.IsOpen, Operation.IsTrue));
+var action = new RuleAction<Person>(p => p.GoToClub);
+var rule = new Rule<Person, Club>(conditionCollection, action);
 
 var people = new List<Person> {
     new Person{ Name = "Anas", Age = 15 },
     new Person{ Name = "Ahmed", Age = 31 },
     new Person{ Name = "Sameh", Age = 54 },
     new Person{ Name = "Janna", Age = 9 }
+};
+var club = new Club
+{
+    Name = "The Club",
+    IsOpen = true
 };
 
 people.ForEach(person =>
@@ -49,7 +61,7 @@ output will be like:
 
 ```
 rule:---------------------------------
-If Age GreaterThan 18, then GoToClub
+If Person Age GreaterThan 18 and Club IsOpen IsTrue, then GoToClub
 --------------------------------------
 --[person 1]--------------------------
 Person whose name is Anas, age is 15, and is not adult
