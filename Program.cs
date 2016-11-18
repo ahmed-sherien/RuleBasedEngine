@@ -9,13 +9,16 @@ namespace RuleBasedEngine
     {
         public static void Main(string[] args)
         {
-            var rules = new List<IRule<Person>>
+            var rules = new List<IRule<Person, Club>>
             {
-                new Rule<Person>(
-                    conditions: new List<IRuleCondition<Person>>
+                new Rule<Person, Club>(
+                    mainConditions: new List<IRuleCondition<Person>>
                     {
-                        new RuleCondition<Person, bool>(p => p.IsAdult, Operation.IsTrue),
                         new RuleCondition<Person, int>(p => p.Age, Operation.GreaterThan, 18)
+                    },
+                    extraConditions: new List<IRuleCondition<Club>>
+                    {
+                        new RuleCondition<Club, bool>(c => c.IsOpen, Operation.IsTrue)
                     },
                     action  : new RuleAction<Person>(p => p.GoToClub))
             };
@@ -25,11 +28,17 @@ namespace RuleBasedEngine
             Console.WriteLine("----------------------------------------");
             Console.WriteLine();
 
-            var people = new List<Person> {
+            var people = new List<Person>
+            {
                 new Person{ Name = "Anas", Age = 15 },
                 new Person{ Name = "Ahmed", Age = 31 },
                 new Person{ Name = "Sameh", Age = 54 },
                 new Person{ Name = "Janna", Age = 9 }
+            };
+
+            var club = new Club
+            {
+                IsOpen = false
             };
 
             people.ForEach(person =>
@@ -39,7 +48,7 @@ namespace RuleBasedEngine
                 rules.ForEach(rule =>
                 {
                     Console.WriteLine($"--[rule {rules.IndexOf(rule) + 1}]------------------------------");
-                    var match = rule.Match(person);
+                    var match = rule.Match(person, club);
                     Console.WriteLine(match);
                     match.Execute();
                     Console.WriteLine("----------------------------------------");
@@ -65,7 +74,7 @@ namespace RuleBasedEngine
             return $"Person whose name is {Name}, age is {Age}, and is {(IsAdult ? string.Empty : "not ")}adult";
         }
     }
-    class Club
+    public class Club
     {
         public bool IsOpen { get; set; }
         public void OpenClub()

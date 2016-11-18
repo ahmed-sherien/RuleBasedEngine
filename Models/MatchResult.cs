@@ -16,4 +16,9 @@ namespace RuleBasedEngine.Models
             return $"{typeof(T).Name} is {(IsMatch ? "" : "not ")}a match";
         }
     }
+
+    public class MatchResult<T1, T2> : MatchResult<T1>
+    {
+        public T2 ExtraItem1 { get; set; }
+    }
 }
