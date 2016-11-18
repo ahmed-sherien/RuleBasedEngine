@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using RuleBasedEngine.Models.Interfaces;
 
 namespace RuleBasedEngine.Models
@@ -35,7 +34,7 @@ namespace RuleBasedEngine.Models
         }
         public override string ToString()
         {
-            return $"{((MemberExpression)Member.Body).Member.Name} {Operation}{(TargetValues.Any() ? " " + TargetValues.Select(v => v.ToString()).Aggregate((s1, s2) => $"{s1}, {s2}") : string.Empty)}";
+            return $"{typeof(T).Name} {((MemberExpression)Member.Body).Member.Name} {Operation} {(TargetValues.Any() ? TargetValues.Select(v => v.ToString()).Aggregate((s1, s2) => $"{s1}, {s2}") : string.Empty)}".Trim();
         }
     }
 }
