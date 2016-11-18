@@ -9,22 +9,14 @@ namespace RuleBasedEngine
     {
         public static void Main(string[] args)
         {
-            var rules = new List<IRule<Person, Club>>
-            {
-                new Rule<Person, Club>(
-                    mainConditions: new List<IRuleCondition<Person>>
-                    {
-                        new RuleCondition<Person, int>(p => p.Age, Operation.GreaterThan, 18)
-                    },
-                    extraConditions: new List<IRuleCondition<Club>>
-                    {
-                        new RuleCondition<Club, bool>(c => c.IsOpen, Operation.IsTrue)
-                    },
-                    action  : new RuleAction<Person>(p => p.GoToClub))
-            };
+            var conditionCollection = new RuleConditionCollection<Person, Club>();
+            conditionCollection.Add(new RuleCondition<Person, int>(p => p.Age, Operation.GreaterThan, 18));
+            conditionCollection.Add(new RuleCondition<Club, bool>(c => c.IsOpen, Operation.IsTrue));
+            var action = new RuleAction<Person>(p => p.GoToClub);
+            var rule = new Rule<Person, Club>(conditionCollection, action);
 
             Console.WriteLine("--[rules]-------------------------------");
-            rules.ForEach(rule => Console.WriteLine(rule));
+            Console.WriteLine(rule);
             Console.WriteLine("----------------------------------------");
             Console.WriteLine();
 
@@ -38,6 +30,7 @@ namespace RuleBasedEngine
 
             var club = new Club
             {
+                Name = "The Club",
                 IsOpen = false
             };
 
@@ -45,14 +38,12 @@ namespace RuleBasedEngine
             {
                 Console.WriteLine($"--[person {people.IndexOf(person) + 1}]----------------------------");
                 Console.WriteLine(person);
-                rules.ForEach(rule =>
-                {
-                    Console.WriteLine($"--[rule {rules.IndexOf(rule) + 1}]------------------------------");
-                    var match = rule.Match(person, club);
-                    Console.WriteLine(match);
-                    match.Execute();
-                    Console.WriteLine("----------------------------------------");
-                });
+                Console.WriteLine(club);
+                //Console.WriteLine($"--[rule {rules.IndexOf(rule) + 1}]------------------------------");
+                var match = rule.Match(person, club);
+                Console.WriteLine(match);
+                match.Execute();
+                //Console.WriteLine("----------------------------------------");
                 Console.WriteLine("----------------------------------------");
                 Console.WriteLine();
             });
@@ -76,6 +67,7 @@ namespace RuleBasedEngine
     }
     public class Club
     {
+        public string Name { get; set; }
         public bool IsOpen { get; set; }
         public void OpenClub()
         {
@@ -84,6 +76,11 @@ namespace RuleBasedEngine
         public void CloseClub()
         {
             IsOpen = false;
+        }
+
+        public override string ToString()
+        {
+            return $"Club whose name is {Name}, is {(IsOpen ? string.Empty : "not ")}open";
         }
     }
 }
