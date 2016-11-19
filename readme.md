@@ -53,7 +53,7 @@ var club = new Club
 
 people.ForEach(person =>
 {
-    rule.Match(person).Execute();
+    rule.Match(person, club).Execute();
 });
 ```
 
