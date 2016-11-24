@@ -9,11 +9,10 @@ namespace RuleBasedEngine
     {
         public static void Main(string[] args)
         {
-            var conditionCollection = new RuleConditionCollection<Person, Club>();
-            conditionCollection.Add(new RuleCondition<Person, int>(p => p.Age, Operation.GreaterThan, 18));
-            conditionCollection.Add(new RuleCondition<Club, bool>(c => c.IsOpen, Operation.IsTrue));
-            var action = new RuleAction<Person>(p => p.GoToClub);
-            var rule = new Rule<Person, Club>(conditionCollection, action);
+            var rule = RuleEngine.CreateRule<Person, Club>()
+                        .If<Person>(p => p.Age).GreaterThan(18)
+                        .AndIf<Club>(c => c.IsOpen).IsTrue()
+                        .Then<Person, Club>(p => p.GoToClub);
 
             Console.WriteLine("--[rules]-------------------------------");
             Console.WriteLine(rule);

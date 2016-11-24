@@ -4,7 +4,7 @@ using RuleBasedEngine.Models.Interfaces;
 
 namespace RuleBasedEngine.Models
 {
-    public class RuleConditionCollection<T>
+    public class RuleConditionCollection<T> : IRuleConditionCollection
     {
         private List<IRuleCondition<T>> _conditions;
         public RuleConditionCollection()
@@ -15,7 +15,7 @@ namespace RuleBasedEngine.Models
         {
             _conditions.Add(condition);
         }
-        public virtual bool IsMatch(T item)
+        public bool IsMatch(T item)
         {
             return _conditions.All(c => c.Compile().Invoke(item));
         }
