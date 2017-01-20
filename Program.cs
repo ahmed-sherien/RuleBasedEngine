@@ -30,7 +30,7 @@ namespace RuleBasedEngine
             var club = new Club
             {
                 Name = "The Club",
-                IsOpen = false
+                IsOpen = true
             };
 
             people.ForEach(person =>

@@ -39,7 +39,15 @@ namespace RuleBasedEngine.Models
         }
         public bool IsMatch(T1 item1, T2 item2)
         {
-            return base.IsMatch(item1) && _conditions.All(c => c.Compile().Invoke(item2));
+            return Item1IsMatch(item1) && Item2IsMatch(item2);
+        }
+        public bool Item1IsMatch(T1 item1)
+        {
+            return base.IsMatch(item1);
+        }
+        public bool Item2IsMatch(T2 item2)
+        {
+            return _conditions.All(c => c.Compile().Invoke(item2));
         }
 
         override public string ToString()

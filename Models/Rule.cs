@@ -41,10 +41,13 @@ namespace RuleBasedEngine.Models
 
         public IMatchResult Match(T1 item1, T2 item2)
         {
-            return new MatchResult<T1>
+            return new MatchResult<T1, T2>
             {
                 IsMatch = Conditions.IsMatch(item1, item2),
+                Item1IsMatch = Conditions.Item1IsMatch(item1),
+                Item2IsMatch = Conditions.Item2IsMatch(item2),
                 Item = item1,
+                ExtraItem1 = item2,
                 Action = Action
             };
         }
