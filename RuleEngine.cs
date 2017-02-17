@@ -7,7 +7,7 @@ using RuleBasedEngine.Models.Interfaces;
 
 namespace RuleBasedEngine
 {
-    public class RuleEngine : ICanCreateCondition, ICanAddOperation, ICanAddStringOperation, ICanAddIntOperation, ICanAddBoolOperation, ICanAddConditionOrAction
+    public class RuleEngine : ICanCreateCondition, ICanAddOperation, ICanAddStringOperation, ICanAddIntOperation, ICanAddBoolOperation, ICanAddDateTimeOperation, ICanAddConditionOrAction
     {
         private RuleEngine(IRuleConditionCollection conditionCollection, params Type[] types)
         {
@@ -46,6 +46,11 @@ namespace RuleBasedEngine
             InitiateCondition<T, bool>(member);
             return this;
         }
+        public ICanAddDateTimeOperation If<T>(Expression<Func<T, DateTime>> member)
+        {
+            InitiateCondition<T, DateTime>(member);
+            return this;
+        }
         public ICanAddOperation If<T, M>(Expression<Func<T, M>> member)
         {
             InitiateCondition<T, M>(member);
@@ -54,6 +59,11 @@ namespace RuleBasedEngine
         public ICanAddIntOperation AndIf<T>(Expression<Func<T, int>> member)
         {
             InitiateCondition<T, int>(member);
+            return this;
+        }
+        public ICanAddDateTimeOperation AndIf<T>(Expression<Func<T, DateTime>> member)
+        {
+            InitiateCondition<T, DateTime>(member);
             return this;
         }
         public ICanAddStringOperation AndIf<T>(Expression<Func<T, string>> member)
@@ -131,6 +141,42 @@ namespace RuleBasedEngine
         public ICanAddConditionOrAction IsFalse()
         {
             AddCondition<bool>(Operation.IsFalse);
+            return this;
+        }
+        public ICanAddConditionOrAction Equal(DateTime value)
+        {
+            AddCondition<DateTime>(Operation.Equal, value);
+            return this;
+        }
+        public ICanAddConditionOrAction NotEqual(DateTime value)
+        {
+            AddCondition<DateTime>(Operation.NotEqual, value);
+            return this;
+        }
+        public ICanAddConditionOrAction LessThan(DateTime value)
+        {
+            AddCondition<DateTime>(Operation.LessThan, value);
+            return this;
+        }
+        public ICanAddConditionOrAction LessThanOrEqual(DateTime value)
+        {
+            AddCondition<DateTime>(Operation.LessThanOrEqual, value);
+            return this;
+        }
+        public ICanAddConditionOrAction GreaterThan(DateTime value)
+        {
+            AddCondition<DateTime>(Operation.GreaterThan, value);
+            return this;
+        }
+        public ICanAddConditionOrAction GreaterThanOrEqual(DateTime value)
+        {
+            AddCondition<DateTime>(Operation.GreaterThanOrEqual, value);
+            return this;
+        }
+        public ICanAddConditionOrAction IsToday()
+        {
+            AddCondition<DateTime>(Operation.GreaterThanOrEqual, DateTime.Today);
+            AddCondition<DateTime>(Operation.LessThan, DateTime.Today.AddDays(1));
             return this;
         }
         #endregion

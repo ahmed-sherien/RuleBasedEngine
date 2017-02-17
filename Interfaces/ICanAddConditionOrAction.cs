@@ -7,6 +7,7 @@ namespace RuleBasedEngine.Interfaces
     public interface ICanAddConditionOrAction
     {
         ICanAddIntOperation AndIf<T>(Expression<Func<T, int>> member);
+        ICanAddDateTimeOperation AndIf<T>(Expression<Func<T, DateTime>> member);
         ICanAddStringOperation AndIf<T>(Expression<Func<T, string>> member);
         ICanAddBoolOperation AndIf<T>(Expression<Func<T, bool>> member);
         ICanAddOperation AndIf<T, M>(Expression<Func<T, M>> member);
