@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using RuleBasedEngine.Models.Interfaces;
+﻿using RuleBasedEngine.Models.Interfaces;
 
 namespace RuleBasedEngine.Models
 {
@@ -47,11 +44,11 @@ namespace RuleBasedEngine.Models
                 Item1IsMatch = Conditions.Item1IsMatch(item1),
                 Item2IsMatch = Conditions.Item2IsMatch(item2),
                 Item = item1,
-                ExtraItem1 = item2,
+                ExtraItem = item2,
                 Action = Action
             };
         }
-        
+
         override public string ToString()
         {
             return $"If {Conditions}, then {Action}";

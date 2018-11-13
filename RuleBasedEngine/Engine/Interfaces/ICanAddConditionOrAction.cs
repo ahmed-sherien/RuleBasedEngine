@@ -1,8 +1,8 @@
+﻿using RuleBasedEngine.Models.Interfaces;
 using System;
 using System.Linq.Expressions;
-using RuleBasedEngine.Models.Interfaces;
 
-namespace RuleBasedEngine.Interfaces
+namespace RuleBasedEngine.Engine.Interfaces
 {
     public interface ICanAddConditionOrAction
     {

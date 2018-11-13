@@ -4,14 +4,8 @@ based on a suggestion by [Martin Konicek](https://github.com/mkonicek) on his [B
 
 built using:
 
-* .Net Core 1.0.1
-* Visual Studio Code
-
-to run:
-
-1. clone
-2. open command line in folder
-3. type `dotnet run`
+* .Net Core 2.1
+* Visual Studio Community
 
 ## Example:
 
@@ -44,6 +38,7 @@ var people = new List<Person> {
     new Person{ Name = "Sameh", Age = 54 },
     new Person{ Name = "Janna", Age = 9 }
 };
+
 var club = new Club
 {
     Name = "The Club",

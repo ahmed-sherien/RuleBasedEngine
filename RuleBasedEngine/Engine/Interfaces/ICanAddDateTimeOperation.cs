@@ -1,6 +1,8 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace RuleBasedEngine.Interfaces
+namespace RuleBasedEngine.Engine.Interfaces
 {
     public interface ICanAddDateTimeOperation
     {

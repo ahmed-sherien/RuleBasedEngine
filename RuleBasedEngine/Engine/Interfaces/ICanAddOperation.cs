@@ -1,4 +1,8 @@
-namespace RuleBasedEngine.Interfaces
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace RuleBasedEngine.Engine.Interfaces
 {
     public interface ICanAddOperation
     {

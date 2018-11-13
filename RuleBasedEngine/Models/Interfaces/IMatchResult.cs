@@ -1,4 +1,4 @@
-namespace RuleBasedEngine.Models.Interfaces
+﻿namespace RuleBasedEngine.Models.Interfaces
 {
     public interface IMatchResult
     {

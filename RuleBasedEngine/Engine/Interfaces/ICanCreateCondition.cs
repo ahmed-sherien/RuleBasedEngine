@@ -1,7 +1,9 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Text;
 
-namespace RuleBasedEngine.Interfaces
+namespace RuleBasedEngine.Engine.Interfaces
 {
     public interface ICanCreateCondition
     {
