@@ -33,10 +33,15 @@ namespace RuleBasedEngine.Models
 
         public Expression<Func<T, bool>> GenerateExpression()
         {
+            // generate a parameter expression
             var parameter = Expression.Parameter(typeof(T));
+            // get member name
             var memberName = ((MemberExpression)Member.Body).Member.Name;
+            // generate a member expression
             var member = parameter.Type.Name == memberName ? (Expression)parameter : MemberExpression.Property(parameter, memberName);
+            // generate lambda expression body
             Expression expression = Operation.GetExpression<M>(member, TargetValues);
+            // return lambda expression
             return Expression.Lambda<Func<T, bool>>(expression, parameter);
         }
 
