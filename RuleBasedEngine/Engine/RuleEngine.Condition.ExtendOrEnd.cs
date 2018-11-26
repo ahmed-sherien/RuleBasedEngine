@@ -47,5 +47,15 @@ namespace RuleBasedEngine.Engine
         {
             return new Rule<T1, T2>((RuleConditionCollection<T1, T2>)_conditionCollection, new RuleAction<T1>(action));
         }
+
+        public IRule<T> Validate<T>()
+        {
+            return new Rule<T>((RuleConditionCollection<T>)_conditionCollection);
+        }
+
+        public IRule<T1, T2> Validate<T1, T2>()
+        {
+            return new Rule<T1, T2>((RuleConditionCollection<T1, T2>)_conditionCollection);
+        }
     }
 }

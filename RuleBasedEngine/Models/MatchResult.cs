@@ -10,7 +10,7 @@ namespace RuleBasedEngine.Models
 
         public void Execute()
         {
-            if (IsMatch)
+            if (IsMatch && Action != null)
             {
                 Action.Method(Item).Invoke();
             }

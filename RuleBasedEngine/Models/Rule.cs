@@ -4,9 +4,12 @@ namespace RuleBasedEngine.Models
 {
     public class Rule<T> : IRule<T>
     {
-        public Rule(RuleConditionCollection<T> conditions, IRuleAction<T> action)
+        public Rule(RuleConditionCollection<T> conditions)
         {
             Conditions = conditions;
+        }
+        public Rule(RuleConditionCollection<T> conditions, IRuleAction<T> action) : this(conditions)
+        {
             Action = action;
         }
         public RuleConditionCollection<T> Conditions { get; set; }
@@ -22,15 +25,18 @@ namespace RuleBasedEngine.Models
         }
         override public string ToString()
         {
-            return $"If {Conditions}, then {Action}";
+            return $"If {Conditions}, then {(Action != null ? Action.ToString() : "validate")}";
         }
     }
 
     public class Rule<T1, T2> : IRule<T1, T2>
     {
-        public Rule(RuleConditionCollection<T1, T2> conditions, IRuleAction<T1> action)
+        public Rule(RuleConditionCollection<T1, T2> conditions)
         {
             Conditions = conditions;
+        }
+        public Rule(RuleConditionCollection<T1, T2> conditions, IRuleAction<T1> action) : this(conditions)
+        {
             Action = action;
         }
         public RuleConditionCollection<T1, T2> Conditions { get; set; }
@@ -51,7 +57,7 @@ namespace RuleBasedEngine.Models
 
         override public string ToString()
         {
-            return $"If {Conditions}, then {Action}";
+            return $"If {Conditions}, then {(Action != null ? Action.ToString() : "validate")}";
         }
     }
 }
