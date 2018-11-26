@@ -2,6 +2,18 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>IbnSherien.RuleBasedEngine</PackageId>
+    <Authors>Ahmed Sherien</Authors>
+    <Company>Ibn Sherien</Company>
+    <Product>Rule Based Engine</Product>
+    <Description>Simple rule based engine helps to create rules and apply it on multiple instances and may excute action based on rule</Description>
+    <RootNamespace>IbnSherien.RuleBasedEngine</RootNamespace>
+    <AssemblyName>IbnSherien.RuleBasedEngine</AssemblyName>
+    <Version>1.0.0-beta</Version>
+    <PackageProjectUrl>https://github.com/ahmed-sherien/RuleBasedEngine</PackageProjectUrl>
+    <PackageTags />
+    <RepositoryUrl>https://github.com/ahmed-sherien/RuleBasedEngine</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
 </Project>
