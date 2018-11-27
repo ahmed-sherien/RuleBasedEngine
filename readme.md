@@ -9,7 +9,7 @@ built using:
 
 ## Install via Nuget
 ```
-> Install-Package IbnSherien.RuleBasedEngine -Version 1.0.0-beta2
+> Install-Package IbnSherien.RuleBasedEngine -Version 1.0.0-beta3
 ```
 
 ## Example

@@ -9,7 +9,7 @@
     <Description>Simple rule based engine helps to create rules and apply it on multiple instances and may excute action based on rule</Description>
     <RootNamespace>IbnSherien.RuleBasedEngine</RootNamespace>
     <AssemblyName>IbnSherien.RuleBasedEngine</AssemblyName>
-    <Version>1.0.0-beta2</Version>
+    <Version>1.0.0-beta3</Version>
     <PackageProjectUrl>https://github.com/ahmed-sherien/RuleBasedEngine</PackageProjectUrl>
     <PackageTags />
     <RepositoryUrl>https://github.com/ahmed-sherien/RuleBasedEngine</RepositoryUrl>
