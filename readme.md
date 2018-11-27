@@ -7,7 +7,12 @@ built using:
 * .Net Core 2.1
 * Visual Studio Community
 
-## Example:
+## Install via Nuget
+```
+> Install-Package IbnSherien.RuleBasedEngine -Version 1.0.0-beta2
+```
+
+## Example
 
 ```csharp
 class Person
