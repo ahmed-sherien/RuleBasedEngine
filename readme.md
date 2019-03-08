@@ -1,4 +1,5 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/ahmed-sherien/rulebasedengine/badge)](https://www.codefactor.io/repository/github/ahmed-sherien/rulebasedengine)
+[![CodeFactor](https://www.codefactor.io/repository/github/ahmed-sherien/rulebasedengine/badge)](https://www.codefactor.io/repository/github/ahmed-sherien/rulebasedengine) [![Build status](https://ci.appveyor.com/api/projects/status/q6owsmdayys1koe4?svg=true)](https://ci.appveyor.com/project/ahmed-sherien/rulebasedengine)
+
 
 # Rule Based Engine
 
